@@ -27,10 +27,10 @@ class App extends Component {
 
   operations = (currentVal, prevVal, operand) => {
 
-    if (operand === '+') return parseInt(currentVal) + parseInt(prevVal);
-    else if (operand === '-') return parseInt(prevVal) - parseInt(currentVal);
-    else if (operand === 'x') return parseInt(currentVal) * parseInt(prevVal);
-    else if (operand === '÷') return parseInt(prevVal) / parseInt(currentVal);
+    if (operand === '+') return parseFloat(currentVal) + parseFloat(prevVal);
+    else if (operand === '-') return parseFloat(prevVal) - parseFloat(currentVal);
+    else if (operand === 'x') return parseFloat(currentVal) * parseFloat(prevVal);
+    else if (operand === '÷') return parseFloat(prevVal) / parseFloat(currentVal);
   }
 
   inputNumbers = (props) => {
@@ -54,8 +54,8 @@ class App extends Component {
     
     const operand = props.target.value;
     const { displayValue, waitingForNewValue, operation, previousValue } = this.state;
-
-
+    const clear = props.target.innerHTML;
+  console.log(typeof(clear))
     if (operand === '=') {
       const result = this.operations(displayValue, previousValue, operation)
 
@@ -67,25 +67,31 @@ class App extends Component {
 
     else if (operand === '%') {
       this.setState({
-        displayValue: parseInt(displayValue) / 100,
+        displayValue: parseFloat(displayValue) / 100,
         waitingForNewValue: true
       })
     }
 
     else if (operand === 'AC') {
-      this.clearDisplay()
+      if (clear === 'AC'){
+        this.clearDisplay()
+      }else{
+        this.setState({previousValue: null})
+      }
+      
     }
 
     else if (operand === '±') {
 
       this.setState({
-        displayValue: parseInt(displayValue) * -1,
+        displayValue: parseFloat(displayValue) * -1,
       })
     }
 
     else {
+      console.log(this.state.operation)
     this.setState({
-      displayValue: operand,
+    //  displayValue: operand, //console.log (+)
       operation: operand,
       waitingForNewValue : true,
       previousValue: displayValue
@@ -101,7 +107,7 @@ class App extends Component {
           <div className="row">
 
            <Inputview handleValue={this.state.displayValue} / >
-           <Operators handleClick={this.handleOperators} / >
+           <Operators handleDoubleClick={this.handleOperators} handleClick={this.handleOperators} / >
            <Numbers handleClick={this.inputNumbers} />
            <OperatorsCol handleClick={this.handleOperators} /> 
           
