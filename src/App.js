@@ -37,8 +37,13 @@ class App extends Component {
     
     const digit = props.target.value;
     const { displayValue, waitingForNewValue } = this.state;   
-
-    if (waitingForNewValue) {
+    
+    console.log(typeof displayValue)
+   
+    if (displayValue.includes('.') && digit === '.'){
+      return;
+    } 
+    else if (waitingForNewValue) {
       this.setState({
         displayValue: String(digit),
         waitingForNewValue: false
@@ -62,9 +67,8 @@ class App extends Component {
       this.setState({
         displayValue: result,
         waitingForNewValue: false
-      })
+      })  
     }
-
     else if (operand === '%') {
       this.setState({
         displayValue: parseFloat(displayValue) / 100,
