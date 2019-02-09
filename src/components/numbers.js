@@ -15,7 +15,7 @@ const Numbers =(props)=>{
                 <button className="button col-4" value='2' attribute="number" onClick={props.handleClick}> 2 </button>
                 <button className="button col-4" value='1' attribute="number" onClick={props.handleClick}> 1 </button>
                 <button className="button col-8" value='0' attribute="number" onClick={props.handleClick}> 0 </button>
-                <button className="button col-4" value='.' attribute="number" onClick={props.handleClick}> . </button>
+                <button className="button col-4" value='.' attribute="string" onClick={props.handleClick}> . </button>
             </div> 
          </div>
         </>
