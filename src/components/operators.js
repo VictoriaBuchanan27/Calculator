@@ -1,15 +1,23 @@
 import React from "react";
 
+const IfWaiting = (props) => {
 
+    if (!props.stateOfWaitin) {
+        return <button className="button col-3 orange" value='AC' onClick={props.handleClick}>AC</button>
+    }
+    else {
+        return  <button className="button col-3 orange" value='C' onClick={props.handleClick}>C</button>
+    }
+}   
 
 const Operators =(props)=>{
 
     return(
-        <>
-            <button className="button col-3 " value='AC' alt='C' onDoubleClick={props.handleClick} onClick={props.handleClick} >AC</button>
-            <button className="button col-3 " value='%' onClick={props.handleClick} > % </button> 
-            <button className="button col-3 " value="±" onClick={props.handleClick} > ± </button>
-            <button className="button col-3 orange " value='÷' onClick={props.handleClick} > ÷ </button>
+        <>  
+            { IfWaiting(props) }
+            <button className="button col-3 orange" value='%' onClick={props.handleClick} > % </button> 
+            <button className="button col-3 orange" value="±" onClick={props.handleClick} > ± </button>
+            <button className="button col-3 orange" value='÷' onClick={props.handleClick} > ÷ </button>
 
         </>
     );
