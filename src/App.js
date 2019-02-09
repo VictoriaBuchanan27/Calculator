@@ -26,12 +26,16 @@ class App extends Component {
 
 
   operations = (currentVal, prevVal, operand) => {
-
+    
+    if (currentVal === null) currentVal ='0';
+    if (prevVal === null) prevVal = '0';
+    console.log( 'currntVal, preval and Operand',currentVal, prevVal, operand)
     if (operand === '+') return parseFloat(currentVal) + parseFloat(prevVal);
     else if (operand === '-') return parseFloat(prevVal) - parseFloat(currentVal);
     else if (operand === 'x') return parseFloat(currentVal) * parseFloat(prevVal);
     else if (operand === '÷') return parseFloat(prevVal) / parseFloat(currentVal);
   }
+
 
   inputNumbers = (props) => {
     
@@ -54,21 +58,25 @@ class App extends Component {
       })
     }
   }
-
   handleOperators = (props) => {
     
     const operand = props.target.value;
     const { displayValue, waitingForNewValue, operation, previousValue } = this.state;
-    const clear = props.target.innerHTML;
-  console.log(typeof(clear))
+    
+
     if (operand === '=') {
       const result = this.operations(displayValue, previousValue, operation)
 
       this.setState({
         displayValue: result,
-        waitingForNewValue: false
-      })  
+        previousValue: null,
+        waitingForNewValue: true,
+        operation: null,
+      }, () => {
+        console.log('state in Equal', this.state)
+      })
     }
+
     else if (operand === '%') {
       this.setState({
         displayValue: parseFloat(displayValue) / 100,
@@ -76,13 +84,13 @@ class App extends Component {
       })
     }
 
-    else if (operand === 'AC') {
-      if (clear === 'AC'){
+    else if (operand === 'C' || operand === 'AC') {
+      if (operand === 'C') {
         this.clearDisplay()
-      }else{
-        this.setState({previousValue: null})
       }
-      
+      else {
+        this.clearAll()
+      }
     }
 
     else if (operand === '±') {
@@ -93,15 +101,32 @@ class App extends Component {
     }
 
     else {
-      console.log(this.state.operation)
-    this.setState({
-    //  displayValue: operand, //console.log (+)
-      operation: operand,
-      waitingForNewValue : true,
-      previousValue: displayValue
-     })  
-    }
+
+      if (previousValue === null) {
+          this.setState({
+            operation: operand,
+            waitingForNewValue : true,
+            previousValue: displayValue
+          }, () => {
+            console.log('Prev Val is NULL:',this.state)
+          })  
+        }
+      else {
+        const result = this.operations(displayValue, previousValue, operation)
+        this.setState({
+          displayValue: result,
+          previousValue: result,
+          operation: operand,
+          waitingForNewValue: true
+
+        }, () => {
+          console.log('Prev Is NOT NULL: ', this.state)
+        })
+      }
+    
   }
+}
+
 
   render () {
     return (
@@ -111,7 +136,7 @@ class App extends Component {
           <div className="row">
 
            <Inputview handleValue={this.state.displayValue} / >
-           <Operators handleDoubleClick={this.handleOperators} handleClick={this.handleOperators} / >
+           <Operators handleClick={this.handleOperators} stateOfWaitin={this.state.waitingForNewValue}/ >
            <Numbers handleClick={this.inputNumbers} />
            <OperatorsCol handleClick={this.handleOperators} /> 
           
