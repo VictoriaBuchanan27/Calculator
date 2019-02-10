@@ -2,11 +2,11 @@ import React from "react";
 
 const IfWaiting = (props) => {
 
-    if (!props.stateOfWaitin) {
-        return <button className="button col-3" value='AC' onClick={props.handleClick}>AC</button>
+    if (props.stateOfWaitin || props.prevVal) {
+        return  <button className="button col-3" value='C' onClick={props.handleClick}>C</button>
     }
     else {
-        return  <button className="button col-3" value='C' onClick={props.handleClick}>C</button>
+        return <button className="button col-3" value='AC' onClick={props.handleClick}>AC</button>
     }
 }   
 
